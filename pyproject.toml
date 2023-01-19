@@ -25,4 +25,4 @@ dev = []
 Homepage = "https://github.com/szpak-dev/command-coach"
 
 [project.scripts]
-realpython = "coach.__main__:main"
+realpython = "command_coach.__main__:main"
