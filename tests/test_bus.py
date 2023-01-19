@@ -1,2 +1,2 @@
-from coach.bus import command_bus_maker
-from coach.plugin_included import LoggingPlugin, LockingPlugin
+from command_coach.bus import command_bus_maker
+from command_coach.plugin_included import LoggingPlugin, LockingPlugin
