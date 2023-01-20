@@ -1,10 +1,12 @@
 import contextvars
+import logging
 
+from .adapter import AsyncDatabase
 from .command import Command
 from .error import CommandCoachPluginError
 from .plugin import CommandCoachPlugin
 
-import logging
+
 logger = logging.getLogger('command_coach')
 
 
@@ -38,3 +40,17 @@ class LoggingPlugin(CommandCoachPlugin):
 
     async def after_handle(self, command: Command):
         logger.debug(f'LoggingPlugin.after_handle: Command {command} have been just handled')
+
+
+class TransactionPluginAsync(CommandCoachPlugin):
+    def __init__(self, async_database: AsyncDatabase):
+        self.database: AsyncDatabase = async_database
+
+    async def before_handle(self, command: Command):
+        await self.database.begin_transaction()
+
+    async def handle_failed(self):
+        await self.database.rollback_transaction()
+
+    async def after_handle(self, command: Command):
+        await self.database.commit_transaction()
