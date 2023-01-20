@@ -10,11 +10,15 @@ class CommandCoachPlugin(ABC):
         pass
 
     @abstractmethod
+    async def handle_failed(self):
+        pass
+
+    @abstractmethod
     async def after_handle(self, command: Command):
         pass
 
 
-class Plugin:
+class Plugins:
     def __init__(self, found: List[CommandCoachPlugin]):
         self.found = found
 
@@ -24,6 +28,10 @@ class Plugin:
     async def before(self, command: Command):
         for m in self.found:
             await m.before_handle(command)
+
+    async def failure(self):
+        for m in self.found:
+            await m.handle_failed()
 
     async def after(self, command: Command):
         reversed_found = list(reversed(self.found))

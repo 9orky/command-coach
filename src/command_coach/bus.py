@@ -3,7 +3,7 @@ from typing import List
 
 from .command import Command, CommandHandler
 from .error import CommandCoachError
-from .plugin import Plugin, CommandCoachPlugin
+from .plugin import Plugins, CommandCoachPlugin
 
 
 def _instantiate_handler_for_command(command: Command):
@@ -19,19 +19,25 @@ def _instantiate_handler_for_command(command: Command):
 
 class CommandCoach:
     def __init__(self, plugins: List[CommandCoachPlugin]):
-        self._plugins = plugins
+        self._plugins_collection = plugins
 
     async def handle(self, command: Command) -> None:
-        m = Plugin(self._plugins)
+        plugins = Plugins(self._plugins_collection)
 
         if not isinstance(command, Command):
             raise CommandCoachError('Every command must be a child of <Command> class')
 
         handler = _instantiate_handler_for_command(command)
 
-        await m.before(command)
-        await handler.handle(command)
-        await m.after(command)
+        await plugins.before(command)
+
+        try:
+            await handler.handle(command)
+        except BaseException as e:
+            await plugins.failure()
+            raise e
+
+        await plugins.after(command)
 
 
 def command_bus_maker(plugins: List[CommandCoachPlugin]) -> CommandCoach:
