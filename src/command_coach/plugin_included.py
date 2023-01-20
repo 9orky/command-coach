@@ -1,5 +1,6 @@
 import contextvars
 import logging
+from time import time
 
 from .adapter import AsyncDatabase
 from .command import Command
@@ -54,3 +55,14 @@ class TransactionPluginAsync(CommandCoachPlugin):
 
     async def after_handle(self, command: Command):
         await self.database.commit_transaction()
+
+
+class ExecutionTimePlugin(CommandCoachPlugin):
+    async def before_handle(self, command: Command):
+        logger.info(f'ExecutionTimePlugin.before_handle started at: {time()}')
+
+    async def handle_failed(self):
+        pass
+
+    async def after_handle(self, command: Command):
+        logger.info(f'ExecutionTimePlugin.after_handle finished at: {time()}')
