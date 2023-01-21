@@ -22,9 +22,6 @@ class Plugins:
     def __init__(self, found: List[CommandCoachPlugin]):
         self.found = found
 
-    def __call__(self, *args, **kwargs):
-        self.found.append(args[0]())
-
     async def before(self, command: Command):
         for m in self.found:
             await m.before_handle(command)

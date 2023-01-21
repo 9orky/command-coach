@@ -6,7 +6,7 @@ from .error import CommandCoachError
 from .plugin import Plugins, CommandCoachPlugin
 
 
-def _instantiate_handler_for_command(command: Command):
+def _instantiate_handler(command: Command):
     command_class_name = command.__class__.__name__
     module = import_module(command.__module__)
 
@@ -27,7 +27,7 @@ class CommandCoach:
         if not isinstance(command, Command):
             raise CommandCoachError('Every command must be a child of <Command> class')
 
-        handler = _instantiate_handler_for_command(command)
+        handler = _instantiate_handler(command)
 
         await plugins.before(command)
 

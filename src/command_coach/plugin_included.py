@@ -37,7 +37,7 @@ class LoggingPlugin(CommandCoachPlugin):
         logger.debug(f'LoggingPlugin.before_handle: Command is about to be handled {command}')
 
     async def handle_failed(self):
-        logger.error(f'LoggingPlugin.handle_failed: unlocking bus after failed handle')
+        logger.error(f'LoggingPlugin.handle_failed: command failed')
 
     async def after_handle(self, command: Command):
         logger.debug(f'LoggingPlugin.after_handle: Command {command} have been just handled')
