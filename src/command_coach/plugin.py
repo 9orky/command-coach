@@ -6,31 +6,63 @@ from .command import Command
 
 class CommandCoachPlugin(ABC):
     @abstractmethod
+    def before_handle(self, command: Command):
+        ...
+
+    @abstractmethod
+    def handle_failed(self):
+        ...
+
+    @abstractmethod
+    def after_handle(self, command: Command):
+        ...
+
+
+class CommandCoachPluginAsync(ABC):
+    @abstractmethod
     async def before_handle(self, command: Command):
-        pass
+        ...
 
     @abstractmethod
     async def handle_failed(self):
-        pass
+        ...
 
     @abstractmethod
     async def after_handle(self, command: Command):
-        pass
+        ...
 
 
 class Plugins:
-    def __init__(self, found: List[CommandCoachPlugin]):
-        self.found = found
+    def __init__(self, installed_plugins: List[CommandCoachPlugin]):
+        self.installed = installed_plugins
+
+    def before(self, command: Command):
+        for plugin in self.installed:
+            plugin.before_handle(command)
+
+    def failure(self):
+        for plugin in self.installed:
+            plugin.handle_failed()
+
+    def after(self, command: Command):
+        reversed_order = list(reversed(self.installed))
+        for plugin in reversed_order:
+            plugin.after_handle(command)
+
+
+class PluginsAsync:
+    def __init__(self, installed_plugins: List[CommandCoachPluginAsync]):
+        self.installed = installed_plugins
 
     async def before(self, command: Command):
-        for m in self.found:
-            await m.before_handle(command)
+        for plugin in self.installed:
+            await plugin.before_handle(command)
 
     async def failure(self):
-        for m in self.found:
-            await m.handle_failed()
+        for plugin in self.installed:
+            await plugin.handle_failed()
 
     async def after(self, command: Command):
-        reversed_found = list(reversed(self.found))
-        for m in reversed_found:
-            await m.after_handle(command)
+        reversed_order = list(reversed(self.installed))
+        for plugin in reversed_order:
+            await plugin.after_handle(command)

@@ -82,20 +82,20 @@ There are already some plugins available for you out of the box. You may use Com
 * tells you how long given command was handled
 
 Example of usage:
+
 ```python
 # command_bus.py
 
-from command_coach.adapter import AsyncDatabase
+from command_coach.adapter import DatabaseTransactionAsync
 from command_coach.bus import command_bus_maker
 from command_coach.plugin_included import LoggingPlugin, LockingPlugin, ExecutionTimePlugin
 
 from display_greetings import DisplayGreetingsCommand
 
-
 bus = command_bus_maker([
-    LockingPlugin(),
-    LoggingPlugin(),
-    ExecutionTimePlugin(),
+  LockingPlugin(),
+  LoggingPlugin(),
+  ExecutionTimePlugin(),
 ])
 
 bus.handle(DisplayGreetingsCommand(greetings='Hello from Command Coach'))

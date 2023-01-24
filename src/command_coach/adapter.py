@@ -1,29 +1,29 @@
 from abc import ABC, abstractmethod
 
 
-class SyncDatabase(ABC):
+class DatabaseTransaction(ABC):
     @abstractmethod
     def begin_transaction(self) -> None:
-        pass
+        ...
 
     @abstractmethod
     def commit_transaction(self) -> None:
-        pass
+        ...
 
     @abstractmethod
     def rollback_transaction(self) -> None:
-        pass
+        ...
 
 
-class AsyncDatabase(ABC):
+class DatabaseTransactionAsync(ABC):
     @abstractmethod
     async def begin_transaction(self) -> None:
-        pass
+        ...
 
     @abstractmethod
     async def commit_transaction(self) -> None:
-        pass
+        ...
 
     @abstractmethod
     async def rollback_transaction(self) -> None:
-        pass
+        ...
