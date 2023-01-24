@@ -6,3 +6,8 @@ test:
 
 atest:
 	python tests/async_test_bus.py
+
+full:
+	@make rb
+	@make test
+	@make atest
