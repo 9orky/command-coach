@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "commandcoach"
-version = "1.4.0"
+version = "1.4.1"
 description = "Command Coach is an async Command Bus with plugins"
 readme = "README.md"
 authors = [{ name = "Tomasz Szpak", email = "tomasz@szpak.dev" }]

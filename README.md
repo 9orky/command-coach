@@ -1,11 +1,11 @@
 # Command Coach
-Command Coach is small, yet powerful **Async Command Bus** implementation for Python. It has a pluggable architecture, 
+Command Coach is small, yet powerful **Command Bus** implementation for Python. It has a pluggable architecture, 
 so you can do whatever you want.
 
 ## Why use it?
-* suitable for **async** applications
+* suitable for both **sync** and **async** applications
 * plugable architecture
-* some **plugins already provided** for most use cases
+* some **plugins already provided** for the most popular use cases
 
 ## Installation
 To install Command Coach just type:
